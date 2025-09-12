@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node network-certification-backend.js",
     "dev": "nodemon network-certification-backend.js",
+    "dev:frontend": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "migrate": "node backend-database-migration.js up",
     "migrate:rollback": "node backend-database-migration.js down",
     "seed": "node backend-seed-data.js seed",
@@ -16,7 +19,8 @@
     "docker:build": "docker build -t network-cert-backend .",
     "docker:run": "docker run -p 3000:3000 network-cert-backend",
     "db:status": "node backend-database-migration.js status",
-    "verify": "node scripts/verify-deployment.js"
+    "verify": "node scripts/verify-deployment.js",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "keywords": [
     "network",
@@ -45,18 +49,30 @@
     "celebrate": "^15.0.1",
     "winston": "^3.11.0",
     "compression": "^1.7.4",
-    "express-fileupload": "^1.4.3"
+    "express-fileupload": "^1.4.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.294.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.12",
+    "@types/react-dom": "^18.2.15",
     "@types/node": "^20.10.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.11",
     "nodemon": "^3.0.2",
     "jest": "^29.7.0",
     "supertest": "^6.3.3",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-node": "^11.1.0"
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "tailwindcss": "^3.3.6",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "gh-pages": "^6.0.0"
   },
   "engines": {
     "node": ">=18.0.0",

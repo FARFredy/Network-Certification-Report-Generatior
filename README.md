@@ -15,8 +15,71 @@ Un sistema completo para la gestión y certificación de redes estructuradas, de
 
 ## 🚀 Inicio Rápido
 
-### Prerrequisitos
+### 🌐 Opción 1: Despliegue en GitHub Pages (Frontend Only - RECOMENDADO)
 
+> ⚠️ **Limitaciones**: GitHub Pages solo soporta frontend estático. No incluye backend, base de datos ni funcionalidades dinámicas.
+
+#### Características disponibles en GitHub Pages:
+- ✅ Interfaz de usuario completa
+- ✅ Generación de reportes PDF (descarga local)
+- ✅ Gestión de datos en memoria del navegador
+- ✅ Importación/exportación CSV
+- ❌ Autenticación de usuarios
+- ❌ Persistencia de datos
+- ❌ API backend
+- ❌ Base de datos
+
+#### Pasos para desplegar:
+
+1. **Instala dependencias**
+   ```bash
+   npm install
+   ```
+
+2. **Configura el repositorio de GitHub**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/tu-usuario/network-certification-system.git
+   git push -u origin main
+   ```
+
+3. **Habilita GitHub Pages**
+   - Ve a Settings → Pages en tu repositorio
+   - Selecciona "GitHub Actions" como source
+   - El workflow se ejecutará automáticamente
+
+4. **O despliega manualmente**
+   ```bash
+   npm run build
+   npm run deploy
+   ```
+
+5. **Accede a tu aplicación**
+   - URL: `https://tu-usuario.github.io/network-certification-system`
+   - El despliegue puede tardar 2-3 minutos
+
+#### Prueba local antes del despliegue:
+
+```bash
+# Instala dependencias
+npm install
+
+# Inicia servidor de desarrollo
+npm run dev:frontend
+
+# O construye y previsualiza
+npm run build
+npm run preview
+```
+
+Abre http://localhost:5173 para ver la aplicación en modo demo.
+
+### Opción 2: Docker (Completo - Backend + BD)
+
+#### Prerrequisitos
 - **Docker y Docker Compose** (recomendado)
 - **Node.js 18+** y **npm** (para desarrollo local)
 - **PostgreSQL 12+** (si no usas Docker)
