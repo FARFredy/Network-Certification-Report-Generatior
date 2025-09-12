@@ -1,4 +1,5 @@
 // server.js - Servidor principal Express.js
+const config = require('./config');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -15,48 +16,51 @@ const PDFDocument = require('pdfkit');
 
 // Configuración del servidor
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.server.port;
 
 // Configuración de la base de datos PostgreSQL
 const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'network_certification',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'password',
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  host: config.database.host,
+  port: config.database.port,
+  database: config.database.name,
+  user: config.database.user,
+  password: config.database.password,
+  ssl: config.database.ssl ? { rejectUnauthorized: false } : false,
+  max: config.database.maxConnections,
+  idleTimeoutMillis: config.database.idleTimeoutMillis,
+  connectionTimeoutMillis: config.database.connectionTimeoutMillis,
 });
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors(config.cors));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // límite de 100 requests por ventana
+  windowMs: config.rateLimit.windowMs,
+  max: config.rateLimit.max,
   message: 'Demasiadas solicitudes desde esta IP'
 });
 app.use('/api/', limiter);
 
 // Configuración de multer para subida de archivos
-const upload = multer({ 
-  dest: 'uploads/',
+const upload = multer({
+  dest: config.upload.uploadPath,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'text/csv') {
+    if (config.upload.allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
       cb(new Error('Solo se permiten archivos CSV'), false);
     }
   },
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB límite
+  limits: { fileSize: config.upload.maxFileSize }
 });
 
 // JWT Secret
-const JWT_SECRET = process.env.JWT_SECRET || 'tu_secret_super_secreto_cambialo_en_produccion';
+const JWT_SECRET = config.jwt.secret;
 
 // Middleware de autenticación
 const authenticateToken = (req, res, next) => {
@@ -141,6 +145,17 @@ const initDatabase = async () => {
   }
 };
 
+// === HEALTH CHECK ===
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0'
+  });
+});
+
 // === RUTAS DE AUTENTICACIÓN ===
 
 // Registro de usuario
@@ -158,8 +173,7 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     // Hash de la contraseña
-    const saltRounds = 12;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
+    const passwordHash = await bcrypt.hash(password, config.security.bcryptRounds);
 
     const result = await pool.query(
       'INSERT INTO users (username, email, password_hash, full_name, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, full_name, role',
@@ -222,7 +236,7 @@ app.post('/api/auth/login', async (req, res) => {
     const token = jwt.sign(
       { userId: user.id, username: user.username, role: user.role },
       JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: config.jwt.expiresIn }
     );
 
     res.json({
