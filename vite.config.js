@@ -1,21 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  // Establece la base apuntando al subdirectorio de GitHub Pages
+  base: '/Network-Certification-Report-Generator/',
   plugins: [react()],
-  base: '/network-certification-system/',
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-  },
-  server: {
-    port: 3001,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      }
-    }
-  }
 })
