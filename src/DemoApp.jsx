@@ -141,7 +141,7 @@ const DemoApp = () => {
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-gray-900">{project.name}</h1>
             <div className="space-x-4">
-              <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
+              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" onClick={() => fileInputRef.current?.click()}>
                 <Upload className="w-4 h-4 mr-2" />
                 Importar
               </button>
@@ -152,7 +152,7 @@ const DemoApp = () => {
                 onChange={handleFileUpload}
                 accept=".csv,.xlsx"
               />
-              <button className="btn-primary" onClick={handleExport}>
+              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" onClick={handleExport}>
                 <Download className="w-4 h-4 mr-2" />
                 Exportar
               </button>
@@ -170,26 +170,26 @@ const DemoApp = () => {
           </div>
         </header>
 
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="rounded-lg border border-gray-200 overflow-hidden">
           <div className="p-6 border-b">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Cables Certificados</h2>
             <div className="grid grid-cols-6 gap-4 mb-4">
               <input
                 type="text"
                 placeholder="Etiqueta"
-                className="input"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200"
                 value={newCable.label}
                 onChange={e => setNewCable(prev => ({ ...prev, label: e.target.value }))}
               />
               <input
                 type="text"
                 placeholder="Destino"
-                className="input"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200"
                 value={newCable.destination}
                 onChange={e => setNewCable(prev => ({ ...prev, destination: e.target.value }))}
               />
               <select
-                className="input"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200 pr-8 cursor-pointer"
                 value={newCable.networkType}
                 onChange={e => setNewCable(prev => ({ ...prev, networkType: e.target.value }))}
               >
@@ -200,12 +200,12 @@ const DemoApp = () => {
               <input
                 type="number"
                 placeholder="Longitud (m)"
-                className="input"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200"
                 value={newCable.length}
                 onChange={e => setNewCable(prev => ({ ...prev, length: e.target.value }))}
               />
               <div className="col-span-2">
-                <button className="btn-primary w-full" onClick={handleAddCable}>
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 w-full" onClick={handleAddCable}>
                   <Plus className="w-4 h-4 mr-2" />
                   Agregar Cable
                 </button>
@@ -217,33 +217,33 @@ const DemoApp = () => {
             <table className="min-w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="table-th">Estado</th>
-                  <th className="table-th">Etiqueta</th>
-                  <th className="table-th">Destino</th>
-                  <th className="table-th">Tipo de Red</th>
-                  <th className="table-th">Longitud (m)</th>
-                  <th className="table-th">Acciones</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 rounded-tl-lg">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Etiqueta</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Destino</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Tipo de Red</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">Longitud (m)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 rounded-tr-lg">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {cables.map(cable => (
                   <tr key={cable.id}>
-                    <td className="table-td">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200">
                       {cable.result ? (
-                        <div className="status-success">
+                        <div className="text-green-600 bg-green-50 rounded-full p-1">
                           <Check className="w-5 h-5" />
                         </div>
                       ) : (
-                        <div className="status-error">
+                        <div className="text-red-600 bg-red-50 rounded-full p-1">
                           <X className="w-5 h-5" />
                         </div>
                       )}
                     </td>
-                    <td className="table-td">{cable.label}</td>
-                    <td className="table-td">{cable.destination}</td>
-                    <td className="table-td">{cable.networkType}</td>
-                    <td className="table-td">{cable.length}</td>
-                    <td className="table-td">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200">{cable.label}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200">{cable.destination}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200">{cable.networkType}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200">{cable.length}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200">
                       <button
                         className="text-red-600 hover:text-red-800"
                         onClick={() => handleDeleteCable(cable.id)}
@@ -259,35 +259,6 @@ const DemoApp = () => {
         </div>
       </div>
 
-      <style jsx="true">{`
-        .btn-primary {
-          @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200;
-        }
-        .input {
-          @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors duration-200;
-        }
-        .table-th {
-          @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 first:rounded-tl-lg last:rounded-tr-lg;
-        }
-        .table-td {
-          @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200;
-        }
-        select.input {
-          @apply pr-8 cursor-pointer;
-        }
-        button:disabled {
-          @apply opacity-50 cursor-not-allowed;
-        }
-        .table-container {
-          @apply rounded-lg border border-gray-200 overflow-hidden;
-        }
-        .status-success {
-          @apply text-green-600 bg-green-50 rounded-full p-1;
-        }
-        .status-error {
-          @apply text-red-600 bg-red-50 rounded-full p-1;
-        }
-      `}</style>
     </div>
   );
 };
